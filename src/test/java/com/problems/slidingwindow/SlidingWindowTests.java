@@ -17,4 +17,10 @@ public class SlidingWindowTests {
         int k = 2;
         assertEquals(4, utility.longestSubstringKDistinctCharacters(string, k));
     }
+
+    @Test
+    public void testMaxFruitCountOf2Types() {
+        char[] arr = {'A', 'B', 'C', 'A', 'C'};
+        assertEquals(3, utility.maxFruitCountOf2Types(arr));
+    }
 }

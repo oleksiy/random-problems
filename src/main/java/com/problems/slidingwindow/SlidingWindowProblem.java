@@ -2,6 +2,7 @@ package com.problems.slidingwindow;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.annotation.Documented;
 import java.util.*;
 
 @Slf4j
@@ -43,14 +44,13 @@ public class SlidingWindowProblem {
     }
 
     public int longestSubstringKDistinctCharacters(String str, int k) {
-        int end, len;
-        end = 0;
+        int len;
         int maxLen = Integer.MIN_VALUE;
         Set<Character> unique = new HashSet<>();
         char[] arr = str.toCharArray();
         Queue<Character> sub = new LinkedList<>();
 
-        for(; end < arr.length; end++) {
+        for(int end = 0; end < arr.length; end++) {
             unique.add(arr[end]);
             sub.add(arr[end]);
             log.info("{} - {}", sub, unique);
@@ -69,5 +69,35 @@ public class SlidingWindowProblem {
         }
         return maxLen;
     }
+
+    /**
+     * Given an array of characters where each character represents a fruit tree, you are given two baskets, and your goal is to put maximum number of fruits in each basket. The only restriction is that each basket can have only one type of fruit.
+     * You can start with any tree, but you can’t skip a tree once you have started. You will pick one fruit from each tree until you cannot, i.e., you will stop when you have to pick from a third fruit type.
+     * Write a function to return the maximum number of fruits in both baskets.
+     * @param arr
+     * @return maximum number of fruit you can put in two baskets (can't mix types)
+     */
+    public static int maxFruitCountOf2Types(char[] arr) {
+        System.out.println(Arrays.toString(arr));
+        final int BASKETS = 2;
+        int maxLen = Integer.MIN_VALUE, start = 0;
+        Map<Character, Integer> charMap = new HashMap<>();
+        for(int end = 0; end < arr.length; end++){
+            char rChar = arr[end];
+            charMap.put(rChar, charMap.getOrDefault(rChar, 0) + 1);
+            while(charMap.size() > BASKETS) {
+                char lChar = arr[start];
+                charMap.put(lChar, charMap.get(lChar) - 1);
+                if(charMap.get(lChar) == 0) {
+                    charMap.remove(lChar);
+                }
+                start++;
+            }
+            maxLen = Math.max(maxLen, end - start + 1);
+        }
+        log.info(charMap.toString());
+        return maxLen;
+    }
+
 
 }
