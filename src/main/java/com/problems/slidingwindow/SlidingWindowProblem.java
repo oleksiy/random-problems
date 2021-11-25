@@ -2,10 +2,7 @@ package com.problems.slidingwindow;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 public class SlidingWindowProblem {
@@ -46,24 +43,29 @@ public class SlidingWindowProblem {
     }
 
     public int longestSubstringKDistinctCharacters(String str, int k) {
-        int start, end, len;
-        start = end = len = 0;
+        int end, len;
+        end = 0;
         int maxLen = Integer.MIN_VALUE;
         Set<Character> unique = new HashSet<>();
-        String sub = "";
-        for(end = 1;end < str.length(); end++) {
-            sub = str.substring(start, end);
-            unique.add(str.charAt(end));
-            log.info("{} - {}",sub, unique.toString());
-            if(unique.size() <= k) {
-                unique.add(str.charAt(end));
-                //record length so far
-                len = sub.length();
+        char[] arr = str.toCharArray();
+        Queue<Character> sub = new LinkedList<>();
+        while(end < arr.length) {
+            unique.add(arr[end]);
+            sub.add(arr[end]);
+            log.info("{} - {}", sub, unique);
+            if (unique.size() <= k) {
+                len = sub.size();
                 maxLen = Math.max(len, maxLen);
             } else {
-                start++;
-
+                while(unique.size() > k) {
+                    char removed = sub.remove();
+                    if(!sub.contains(removed) && unique.contains(removed)) {
+                        unique.remove(removed);
+                        log.info("removing {} from unique set - {}", removed, unique);
+                    }
+                }
             }
+            end++;
         }
         return maxLen;
     }
