@@ -49,7 +49,8 @@ public class SlidingWindowProblem {
         Set<Character> unique = new HashSet<>();
         char[] arr = str.toCharArray();
         Queue<Character> sub = new LinkedList<>();
-        while(end < arr.length) {
+
+        for(; end < arr.length; end++) {
             unique.add(arr[end]);
             sub.add(arr[end]);
             log.info("{} - {}", sub, unique);
@@ -65,7 +66,6 @@ public class SlidingWindowProblem {
                     }
                 }
             }
-            end++;
         }
         return maxLen;
     }
