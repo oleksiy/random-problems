@@ -46,10 +46,26 @@ public class SlidingWindowProblem {
     }
 
     public int longestSubstringKDistinctCharacters(String str, int k) {
-        Set<String> s = new HashSet<>();
-        StringBuffer sb = new StringBuffer();
-        sb.toString().contains(s.toString());
-        return 0;
+        int start, end, len;
+        start = end = len = 0;
+        int maxLen = Integer.MIN_VALUE;
+        Set<Character> unique = new HashSet<>();
+        String sub = "";
+        for(end = 1;end < str.length(); end++) {
+            sub = str.substring(start, end);
+            unique.add(str.charAt(end));
+            log.info("{} - {}",sub, unique.toString());
+            if(unique.size() <= k) {
+                unique.add(str.charAt(end));
+                //record length so far
+                len = sub.length();
+                maxLen = Math.max(len, maxLen);
+            } else {
+                start++;
+
+            }
+        }
+        return maxLen;
     }
 
 }
