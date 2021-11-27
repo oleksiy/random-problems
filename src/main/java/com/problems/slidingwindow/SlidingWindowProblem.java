@@ -99,5 +99,21 @@ public class SlidingWindowProblem {
         return maxLen;
     }
 
+    public static int noRepeatSubstring(String str) {
+        Queue<Character> q = new LinkedList<>();
+        char[] arr = str.toCharArray();
+        int maxLen = Integer.MIN_VALUE;
+        for(int end = 0; end < arr.length; end ++) {
+            if(q.contains(arr[end])) {
+                while(q.peek() != arr[end]) {
+                    q.remove();
+                }
+            } else {
+                q.add(arr[end]);
+                maxLen = Math.max(maxLen, q.size());
+            }
+        }
+        return maxLen;
+    }
 
 }
