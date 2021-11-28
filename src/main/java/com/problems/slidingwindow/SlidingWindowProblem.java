@@ -116,4 +116,9 @@ public class SlidingWindowProblem {
         return maxLen;
     }
 
+    public static int longestSubstringWithSameLettersAfterReplacement(String str, int k) {
+        //TODO: implement
+        return -1;
+    }
+
 }

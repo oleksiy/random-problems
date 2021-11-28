@@ -3,10 +3,7 @@ package com.problems.slidingwindow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,5 +30,13 @@ public class SlidingWindowTests {
     public void testNoRepeatSubstring() {
         String a = "aabccbb";
         assertEquals(3, utility.noRepeatSubstring(a));
+    }
+
+    @Test
+    public void testLongestSubstringWithSameLettersAfterReplacement() {
+        String a = "abccde";
+        int k = 1;
+        Map<Character, Integer> map = new HashMap<>();
+        assertEquals(3, utility.longestSubstringKDistinctCharacters(a, k));
     }
 }
