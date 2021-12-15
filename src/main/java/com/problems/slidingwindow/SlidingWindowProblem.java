@@ -118,7 +118,23 @@ public class SlidingWindowProblem {
 
     public static int longestSubstringWithSameLettersAfterReplacement(String str, int k) {
         //TODO: implement
-        return -1;
+        int lchar, rchar;
+        lchar = rchar = 0;
+        int maxLength = 0;
+        Map<Character, Integer> charMap = new HashMap<>();
+        for(; rchar < str.length(); rchar++) {
+            charMap.put(str.charAt(rchar), charMap.getOrDefault(charMap.get(str.charAt(rchar))+1, 1));
+            maxLength = Math.max(maxLength, charMap.get(str.charAt(rchar)));
+            if(charMap.get(str.charAt(rchar)) >= k) {
+                while(lchar < rchar) {
+                    lchar ++;
+                }
+                if(str.charAt(lchar) != str.charAt(rchar) && charMap.get(str.charAt(rchar)) <= k) {
+                    maxLength += charMap.get(str.charAt(rchar));
+                }
+            }
+        }
+        return maxLength;
     }
 
 }
