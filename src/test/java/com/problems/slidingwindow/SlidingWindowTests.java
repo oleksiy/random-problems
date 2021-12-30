@@ -37,6 +37,14 @@ public class SlidingWindowTests {
         String a = "abccde";
         int k = 1;
         Map<Character, Integer> map = new HashMap<>();
-        assertEquals(3, utility.longestSubstringKDistinctCharacters(a, k));
+        assertEquals(3, utility.longestSubstringWithSameLettersAfterReplacement(a, k));
+    }
+
+    @Test
+    public void testLongestSubstringWithSameLettersAfterReplacement2() {
+        String a = "aabccbb";
+        int k = 2;
+        Map<Character, Integer> map = new HashMap<>();
+        assertEquals(5, utility.longestSubstringWithSameLettersAfterReplacement(a, k));
     }
 }

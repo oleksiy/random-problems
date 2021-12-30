@@ -122,16 +122,24 @@ public class SlidingWindowProblem {
         lchar = rchar = 0;
         int maxLength = 0;
         Map<Character, Integer> charMap = new HashMap<>();
+        int maxLetterCount = 0;
         for(; rchar < str.length(); rchar++) {
-            charMap.put(str.charAt(rchar), charMap.getOrDefault(charMap.get(str.charAt(rchar))+1, 1));
-            maxLength = Math.max(maxLength, charMap.get(str.charAt(rchar)));
-            if(charMap.get(str.charAt(rchar)) >= k) {
-                while(lchar < rchar) {
-                    lchar ++;
+            charMap.put(str.charAt(rchar), 1 + charMap.getOrDefault(str.charAt(rchar), 0));
+            maxLetterCount = Math.max(maxLetterCount, charMap.get(str.charAt(rchar)));
+            if (charMap.size() - k <= k+1) {
+                log.info("You can replace all letters and still get away with it lchar is {}, rchar is {}, maxLetterCount is {}",
+                        lchar, rchar, maxLetterCount);
+                maxLength = Math.max(maxLength, rchar - lchar + 1);
+            }
+
+            if (charMap.size() - k > k){
+                if(charMap.get(str.charAt(lchar)) == 1) {
+                    charMap.remove(lchar);
+                } else {
+                    charMap.put(str.charAt(lchar), charMap.get(str.charAt(lchar)) - 1);
                 }
-                if(str.charAt(lchar) != str.charAt(rchar) && charMap.get(str.charAt(rchar)) <= k) {
-                    maxLength += charMap.get(str.charAt(rchar));
-                }
+                lchar ++;
+                maxLength = Math.max(maxLength, rchar - lchar + 1);
             }
         }
         return maxLength;
