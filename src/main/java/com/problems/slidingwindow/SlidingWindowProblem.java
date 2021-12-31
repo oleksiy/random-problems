@@ -117,30 +117,20 @@ public class SlidingWindowProblem {
     }
 
     public static int longestSubstringWithSameLettersAfterReplacement(String str, int k) {
-        //TODO: implement
-        int lchar, rchar;
-        lchar = rchar = 0;
+        int windowStart = 0;
+        Map<Character, Integer> occurrenceMap = new HashMap<>();
         int maxLength = 0;
-        Map<Character, Integer> charMap = new HashMap<>();
-        int maxLetterCount = 0;
-        for(; rchar < str.length(); rchar++) {
-            charMap.put(str.charAt(rchar), 1 + charMap.getOrDefault(str.charAt(rchar), 0));
-            maxLetterCount = Math.max(maxLetterCount, charMap.get(str.charAt(rchar)));
-            if (charMap.size() - k <= k+1) {
-                log.info("You can replace all letters and still get away with it lchar is {}, rchar is {}, maxLetterCount is {}",
-                        lchar, rchar, maxLetterCount);
-                maxLength = Math.max(maxLength, rchar - lchar + 1);
+        int mostFrequentCharCount = 0;
+        for(int windowEnd = 0; windowEnd < str.length(); windowEnd++) {
+            char rChar = str.charAt(windowEnd);
+            occurrenceMap.put(rChar, occurrenceMap.getOrDefault(rChar, 0) + 1);
+            mostFrequentCharCount = Math.max(mostFrequentCharCount, occurrenceMap.get(rChar));
+            if(windowEnd - windowStart + 1 - mostFrequentCharCount > k) {
+                char lChar = str.charAt(windowStart);
+                occurrenceMap.put(lChar, occurrenceMap.get(lChar) - 1);
+                windowStart++;
             }
-
-            if (charMap.size() - k > k){
-                if(charMap.get(str.charAt(lchar)) == 1) {
-                    charMap.remove(lchar);
-                } else {
-                    charMap.put(str.charAt(lchar), charMap.get(str.charAt(lchar)) - 1);
-                }
-                lchar ++;
-                maxLength = Math.max(maxLength, rchar - lchar + 1);
-            }
+            maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
         }
         return maxLength;
     }
