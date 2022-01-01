@@ -156,4 +156,95 @@ public class SlidingWindowProblem {
         return maxLen;
     }
 
+    /**
+     * Given a string and a pattern, find out if the string contains any permutation of the pattern.
+     *
+     * Permutation is defined as the re-arranging of the characters of the string. For example, “abc” has the following six permutations:
+     *
+     * abc
+     * acb
+     * bac
+     * bca
+     * cab
+     * cba
+     * If a string has ‘n’ distinct characters, it will have n! permutations.
+     *
+     * Example 1:
+     *
+     * Input: String="oidbcaf", Pattern="abc"
+     * Output: true
+     * Explanation: The string contains "bca" which is a permutation of the given pattern.
+     *
+     * Example 2:
+     *
+     * Input: String="odicf", Pattern="dc"
+     * Output: false
+     * Explanation: No permutation of the pattern is present in the given string as a substring.
+     *
+     * @return true or false
+     */
+    public static boolean problemChallengeOne(String input, String permutation) {
+        int windowSize = permutation.length();
+        int windowStart = 0;
+        if(windowSize > input.length())
+            return false;
+
+        for(int windowEnd = 0; windowEnd < input.length(); windowEnd++) {
+            int matchCounter = 0;
+            if (windowEnd - windowStart + 1 == windowSize) {
+                log.info("window size hit at start {} and end {}", windowStart, windowEnd);
+                for (int i = windowStart; i <= windowEnd; i++) {
+                    String c = String.valueOf(input.charAt(i));
+                    log.info("checking if {} is in {}", input.charAt(i), permutation);
+                    if(permutation.contains(c)) {
+                        matchCounter++;
+                    }
+                    if(matchCounter == windowSize)
+                        return true;
+                }
+                windowStart++;
+            }
+        }
+        return false;
+    }
+
+    public static boolean problemChallengeOneMoreEfficient(String input, String permutation) {
+        int windowStart = 0;
+        int matchCounter = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+
+        //fill frequency map
+        for(char c: permutation.toCharArray()) {
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+        }
+
+        for(int windowEnd = 0; windowEnd < input.length(); windowEnd++) {
+            char rChar = input.charAt(windowEnd);
+            if(frequencyMap.containsKey(rChar)) {
+                frequencyMap.put(rChar, frequencyMap.get(rChar) - 1);
+                if(frequencyMap.get(rChar) == 0) {
+                    matchCounter++;
+                }
+            }
+
+            if(matchCounter == permutation.length())
+                return true;
+            //as soon as we exceed the first n characters (size of the permutation), we want to
+            //make sure we maintain a window equal to the permutation.
+            //Increment the start, check if that character is in the map
+            //if it is in the map, but we already matched it to 0 times, decrement the match counter
+            //re-add that character back to the frequency map, incrementing its count
+            if(windowEnd >= permutation.length()) {
+                windowStart++;
+                char lChar = input.charAt(windowStart);
+                if(frequencyMap.containsKey(lChar)) {
+                    if(frequencyMap.get(lChar) == 0)
+                        matchCounter--;
+                    frequencyMap.put(lChar, frequencyMap.get(lChar) + 1);
+                }
+            }
+        }
+        return false;
+    }
+
 }

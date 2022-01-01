@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j
@@ -55,5 +55,33 @@ public class SlidingWindowTests {
         int[] arr2 = {0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1};
         int k2 = 2;
         assertEquals(6, utility.longestSubArrayWithOnesReplacement(arr2, k2));
+    }
+
+    @Test
+    public void testProblemOneChallengeTest1() {
+        String input = "oidbcaf";
+        String permutation = "abc";
+        assertTrue(utility.problemChallengeOne(input, permutation));
+    }
+
+    @Test
+    public void testProblemOneChallengeTest2() {
+        String input = "odicf";
+        String permutation = "dc";
+        assertFalse(utility.problemChallengeOne(input, permutation));
+    }
+
+    @Test
+    public void testProblemOneChallengeMoreEfficientTest1() {
+        String input = "oidbcaf";
+        String permutation = "abc";
+        assertTrue(utility.problemChallengeOneMoreEfficient(input, permutation));
+    }
+
+    @Test
+    public void testProblemOneChallengeMoreEfficientTest2() {
+        String input = "odicf";
+        String permutation = "dc";
+        assertFalse(utility.problemChallengeOneMoreEfficient(input, permutation));
     }
 }
