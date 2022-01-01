@@ -1,5 +1,6 @@
 package com.problems.slidingwindow;
 
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,6 @@ public class SlidingWindowTests {
     public void testLongestSubstringWithSameLettersAfterReplacement() {
         String a = "abccde";
         int k = 1;
-        Map<Character, Integer> map = new HashMap<>();
         assertEquals(3, utility.longestSubstringWithSameLettersAfterReplacement(a, k));
     }
 
@@ -44,7 +44,16 @@ public class SlidingWindowTests {
     public void testLongestSubstringWithSameLettersAfterReplacement2() {
         String a = "aabccbb";
         int k = 2;
-        Map<Character, Integer> map = new HashMap<>();
         assertEquals(5, utility.longestSubstringWithSameLettersAfterReplacement(a, k));
+    }
+
+    @Test
+    public void testLongestSubArrayWithOnesReplacement() {
+        int[] arr = {0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1};
+        int k = 3;
+        assertEquals(9, utility.longestSubArrayWithOnesReplacement(arr, k));
+        int[] arr2 = {0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1};
+        int k2 = 2;
+        assertEquals(6, utility.longestSubArrayWithOnesReplacement(arr2, k2));
     }
 }

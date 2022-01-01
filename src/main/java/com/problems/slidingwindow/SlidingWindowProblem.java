@@ -135,4 +135,25 @@ public class SlidingWindowProblem {
         return maxLength;
     }
 
+    public static int longestSubArrayWithOnesReplacement(int[] arr, int k) {
+        int windowStart = 0;
+        int maxLen = 0;
+        int maxOnesCount = 0;
+        for (int windowEnd = 0; windowEnd < arr.length; windowEnd++) {
+            if(arr[windowEnd] == 1) {
+                maxOnesCount++;
+            }
+
+            //if there's more than k zeros, we have to start trimming down the window
+            if(windowEnd - windowStart + 1 - maxOnesCount > k) {
+                if(arr[windowStart] == 1) {
+                    maxOnesCount--;
+                }
+                windowStart++;
+            }
+            maxLen = Math.max(maxLen, windowEnd - windowStart + 1);
+        }
+        return maxLen;
+    }
+
 }
