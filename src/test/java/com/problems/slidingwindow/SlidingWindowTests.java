@@ -84,4 +84,30 @@ public class SlidingWindowTests {
         String permutation = "dc";
         assertFalse(utility.problemChallengeOneMoreEfficient(input, permutation));
     }
+
+    @Test
+    public void testProblemChallengeTwoTest1() {
+        String input = "ppqp";
+        String pattern = "qp";
+        int[] exResult = {1,2};
+        List<Integer> result = utility.problemChallengeTwo(input, pattern);
+
+        log.debug("{}", result);
+        for(int e: exResult) {
+            assertTrue(result.contains(e), "Doesn't contain " + e);
+        }
+    }
+
+    @Test
+    public void testProblemChallengeTwoTest2() {
+        String input = "ppqp";
+        String pattern = "qp";
+        int[] exResult = {1,2};
+        List<Integer> result = utility.problemChallengeTwo(input, pattern);
+
+        log.debug("{}", result);
+        for(int e: exResult) {
+            assertTrue(result.contains(e), "Doesn't contain " + e);
+        }
+    }
 }

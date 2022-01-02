@@ -247,4 +247,42 @@ public class SlidingWindowProblem {
         return false;
     }
 
+    public static List<Integer> problemChallengeTwo(String str, String pattern) {
+        List<Integer> result = new ArrayList<>();
+        Map<Character, Integer> map = new HashMap<>();
+        int windowStart = 0;
+        //create frequency map
+        for(char c: pattern.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        log.info("Starting out with map {}", map);
+        for(int windowEnd = 0; windowEnd < str.length(); windowEnd++) {
+            if(windowEnd - windowStart + 1 == pattern.length()) {
+                boolean isMatch = isAnagram(str.substring(windowStart, windowEnd+1), pattern, new HashMap<>(map));
+                log.info("startIndex {} endIndex {} - match found? {}", windowStart, windowEnd, isMatch);
+                if(isMatch) {
+                    result.add(windowStart);
+                    windowStart++;
+                } else {
+                    windowStart++;
+                }
+            }
+        }
+        return result;
+    }
+
+    private static boolean isAnagram(String str, String pattern, Map<Character, Integer> map) {
+        log.info("substring passed {}, map {}", str, map);
+        for(char c : str.toCharArray()) {
+            if(map.containsKey(c)) {
+                map.put(c, map.get(c) - 1);
+            }
+        }
+        for(char c : map.keySet()) {
+            if(map.get(c) != 0)
+                return false;
+        }
+        return true;
+    }
+
 }
