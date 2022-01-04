@@ -273,7 +273,7 @@ public class SlidingWindowProblem {
 
     private static boolean isAnagram(String str, String pattern, Map<Character, Integer> map) {
         log.info("substring passed {}, map {}", str, map);
-        for(char c : str.toCharArray()) {
+        for(char c : pattern.toCharArray()) {
             if(map.containsKey(c)) {
                 map.put(c, map.get(c) - 1);
             }
@@ -285,4 +285,43 @@ public class SlidingWindowProblem {
         return true;
     }
 
+    public String problemChallengeThree(String str, String pattern) {
+        String result = "";
+        int windowStart = 0;
+        int matchCount = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        //Build a frequency map which will be used for matching, all chars are matched when their counts >=0
+        for(char c: pattern.toCharArray())
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+
+        for(int windowEnd = 0; windowEnd < str.length(); windowEnd ++) {
+            char rChar = str.charAt(windowEnd);
+            if(frequencyMap.containsKey(rChar)) {
+                frequencyMap.put(rChar, frequencyMap.get(rChar) - 1);
+                if(frequencyMap.get(rChar) == 0) {
+                    log.info("match found for {}", rChar);
+                    matchCount++;
+                }
+            }
+
+            //attempt to shrink the window to fit the pattern
+            if(windowEnd >= pattern.length() - 1) {
+                log.info("{}", frequencyMap);
+                char lChar = str.charAt(windowStart++);
+                log.info("Looking at {}", lChar);
+                if(frequencyMap.containsKey(lChar)) {
+                    if(frequencyMap.get(lChar) < 0) {
+                        log.info("too many, now start is {}", windowStart);
+                        frequencyMap.put(lChar, frequencyMap.get(lChar) + 1);
+                    }
+                }
+            }
+
+            if(matchCount == pattern.length()) {
+                log.info("pattern matched! start {} end {}", windowStart, windowEnd);
+                result = str.substring(windowStart, windowEnd+1);
+            }
+        }
+        return result;
+    }
 }

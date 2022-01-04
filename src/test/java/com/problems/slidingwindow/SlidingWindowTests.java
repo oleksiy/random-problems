@@ -110,4 +110,20 @@ public class SlidingWindowTests {
             assertTrue(result.contains(e), "Doesn't contain " + e);
         }
     }
+
+    @Test
+    public void testProblemChallengeThreeTest1() {
+        String input = "aabdec";
+        String pattern = "abc";
+        String expResult = "abdec";
+        assertEquals(expResult, utility.problemChallengeThree(input, pattern));
+    }
+
+    @Test
+    public void testProblemChallengeThreeTest2() {
+        String input = "abdbca";
+        String pattern = "abc";
+        String expResult = "bca";
+        assertEquals(expResult, utility.problemChallengeThree(input, pattern));
+    }
 }
