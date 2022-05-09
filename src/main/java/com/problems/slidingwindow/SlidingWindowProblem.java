@@ -326,23 +326,67 @@ public class SlidingWindowProblem {
     }
     /**
      * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+     * Old solution
+     * class Solution {
+     *     public int lengthOfLongestSubstring(String s) {
+     *         if (s == null) {
+     *             return 0;
+     *         }
+     *         if (s.equalsIgnoreCase(" ")) {
+     *             return 1;
+     *         }
+     *         char[] charArray = s.toCharArray();
+     *         List<String> allStrings = new ArrayList<>();
+     *         StringBuffer sb = new StringBuffer();
+     *         for(char c: charArray) {
+     *             if(sb.indexOf(String.valueOf(c)) == -1){
+     *                 sb.append(c);
+     *                 allStrings.add(sb.toString());
+     *             } else {
+     *                 allStrings.add(sb.toString());
+     *                 cleanUpToCharacter(sb, c);
+     *                 sb.append(c);
+     *             }
+     *         }
+     *         return longestString(allStrings);
+     *     }
+     *
+     *     public int longestString(List<String> list) {
+     *         int max = 0;
+     *         for(String s: list) {
+     *             if(s.length() > max) {
+     *                 max = s.length();
+     *             }
+     *         }
+     *         return max;
+     *     }
+     *
+     *     public void clearStringBuffer(StringBuffer sb) {
+     *         int length = sb.length();
+     *         sb.delete(0, length);
+     *     }
+     *
+     *     public void cleanUpToCharacter(StringBuffer sb, char c) {
+     *         sb.delete(0, sb.indexOf(String.valueOf(c)) + 1);
+     *     }
+     *
+     * }
      * @param s
      * @return
      */
     public static int leetCodeSlidingWindowProblem(String s) {
-        int maxSize = Integer.MIN_VALUE;
+        int maxSize = 0;
+        //map of indices
         Map<Character, Integer> map = new HashMap<>();
         int start = 0;
         for (int end = 0; end < s.length(); end++) {
             char rChar = s.charAt(end);
-            if(map.keySet().contains(rChar)) {
-                maxSize = Math.max(end - start, maxSize);
-                map.put(rChar, map.get(rChar) - 1);
-                if(map.get(rChar) == 0)
-                    map.remove(rChar);
-                start++;
+            if(map.containsKey(rChar)) {
+                // if we already have the key, we have to set start at either current index for that character,
+                // or the index next to that character
+                start = Math.max(start, map.get(rChar) + 1);
             }
-            map.put(rChar, 1);
+            map.put(rChar, end);
             maxSize = Math.max(maxSize, end - start + 1);
         }
         return maxSize;
