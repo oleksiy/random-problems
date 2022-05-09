@@ -156,4 +156,267 @@ public class SlidingWindowProblem {
         return maxLen;
     }
 
+    /**
+     * Given a string and a pattern, find out if the string contains any permutation of the pattern.
+     *
+     * Permutation is defined as the re-arranging of the characters of the string. For example, “abc” has the following six permutations:
+     *
+     * abc
+     * acb
+     * bac
+     * bca
+     * cab
+     * cba
+     * If a string has ‘n’ distinct characters, it will have n! permutations.
+     *
+     * Example 1:
+     *
+     * Input: String="oidbcaf", Pattern="abc"
+     * Output: true
+     * Explanation: The string contains "bca" which is a permutation of the given pattern.
+     *
+     * Example 2:
+     *
+     * Input: String="odicf", Pattern="dc"
+     * Output: false
+     * Explanation: No permutation of the pattern is present in the given string as a substring.
+     *
+     * @return true or false
+     */
+    public static boolean problemChallengeOne(String input, String permutation) {
+        int windowSize = permutation.length();
+        int windowStart = 0;
+        if(windowSize > input.length())
+            return false;
+
+        for(int windowEnd = 0; windowEnd < input.length(); windowEnd++) {
+            int matchCounter = 0;
+            if (windowEnd - windowStart + 1 == windowSize) {
+                log.info("window size hit at start {} and end {}", windowStart, windowEnd);
+                for (int i = windowStart; i <= windowEnd; i++) {
+                    String c = String.valueOf(input.charAt(i));
+                    log.info("checking if {} is in {}", input.charAt(i), permutation);
+                    if(permutation.contains(c)) {
+                        matchCounter++;
+                    }
+                    if(matchCounter == windowSize)
+                        return true;
+                }
+                windowStart++;
+            }
+        }
+        return false;
+    }
+
+    public static boolean problemChallengeOneMoreEfficient(String input, String permutation) {
+        int windowStart = 0;
+        int matchCounter = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+
+        //fill frequency map
+        for(char c: permutation.toCharArray()) {
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+        }
+
+        for(int windowEnd = 0; windowEnd < input.length(); windowEnd++) {
+            char rChar = input.charAt(windowEnd);
+            if(frequencyMap.containsKey(rChar)) {
+                frequencyMap.put(rChar, frequencyMap.get(rChar) - 1);
+                if(frequencyMap.get(rChar) == 0) {
+                    matchCounter++;
+                }
+            }
+
+            if(matchCounter == permutation.length())
+                return true;
+            //as soon as we exceed the first n characters (size of the permutation), we want to
+            //make sure we maintain a window equal to the permutation.
+            //Increment the start, check if that character is in the map
+            //if it is in the map, but we already matched it to 0 times, decrement the match counter
+            //re-add that character back to the frequency map, incrementing its count
+            if(windowEnd >= permutation.length()) {
+                windowStart++;
+                char lChar = input.charAt(windowStart);
+                if(frequencyMap.containsKey(lChar)) {
+                    if(frequencyMap.get(lChar) == 0)
+                        matchCounter--;
+                    frequencyMap.put(lChar, frequencyMap.get(lChar) + 1);
+                }
+            }
+        }
+        return false;
+    }
+
+    public static List<Integer> problemChallengeTwo(String str, String pattern) {
+        List<Integer> result = new ArrayList<>();
+        Map<Character, Integer> map = new HashMap<>();
+        int windowStart = 0;
+        //create frequency map
+        for(char c: pattern.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        log.info("Starting out with map {}", map);
+        for(int windowEnd = 0; windowEnd < str.length(); windowEnd++) {
+            if(windowEnd - windowStart + 1 == pattern.length()) {
+                boolean isMatch = isAnagram(str.substring(windowStart, windowEnd+1), pattern, new HashMap<>(map));
+                log.info("startIndex {} endIndex {} - match found? {}", windowStart, windowEnd, isMatch);
+                if(isMatch) {
+                    result.add(windowStart);
+                    windowStart++;
+                } else {
+                    windowStart++;
+                }
+            }
+        }
+        return result;
+    }
+
+    private static boolean isAnagram(String str, String pattern, Map<Character, Integer> map) {
+        log.info("substring passed {}, map {}", str, map);
+        for(char c : pattern.toCharArray()) {
+            if(map.containsKey(c)) {
+                map.put(c, map.get(c) - 1);
+            }
+        }
+        for(char c : map.keySet()) {
+            if(map.get(c) != 0)
+                return false;
+        }
+        return true;
+    }
+
+    public String problemChallengeThree(String str, String pattern) {
+        String result = "";
+        int windowStart = 0;
+        int matchCount = 0;
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        //Build a frequency map which will be used for matching, all chars are matched when their counts >=0
+        for(char c: pattern.toCharArray())
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+
+        for(int windowEnd = 0; windowEnd < str.length(); windowEnd ++) {
+            char rChar = str.charAt(windowEnd);
+            if(frequencyMap.containsKey(rChar)) {
+                frequencyMap.put(rChar, frequencyMap.get(rChar) - 1);
+                if(frequencyMap.get(rChar) == 0) {
+                    log.info("match found for {}", rChar);
+                    matchCount++;
+                }
+            }
+
+            //attempt to shrink the window to fit the pattern
+            if(windowEnd >= pattern.length() - 1) {
+                log.info("{}", frequencyMap);
+                char lChar = str.charAt(windowStart++);
+                log.info("Looking at {}", lChar);
+                if(frequencyMap.containsKey(lChar)) {
+                    if(frequencyMap.get(lChar) < 0) {
+                        log.info("too many, now start is {}", windowStart);
+                        frequencyMap.put(lChar, frequencyMap.get(lChar) + 1);
+                    }
+                }
+            }
+
+            if(matchCount == pattern.length()) {
+                log.info("pattern matched! start {} end {}", windowStart, windowEnd);
+                result = str.substring(windowStart, windowEnd+1);
+            }
+        }
+        return result;
+    }
+    /**
+     * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+     * Old solution
+     * class Solution {
+     *     public int lengthOfLongestSubstring(String s) {
+     *         if (s == null) {
+     *             return 0;
+     *         }
+     *         if (s.equalsIgnoreCase(" ")) {
+     *             return 1;
+     *         }
+     *         char[] charArray = s.toCharArray();
+     *         List<String> allStrings = new ArrayList<>();
+     *         StringBuffer sb = new StringBuffer();
+     *         for(char c: charArray) {
+     *             if(sb.indexOf(String.valueOf(c)) == -1){
+     *                 sb.append(c);
+     *                 allStrings.add(sb.toString());
+     *             } else {
+     *                 allStrings.add(sb.toString());
+     *                 cleanUpToCharacter(sb, c);
+     *                 sb.append(c);
+     *             }
+     *         }
+     *         return longestString(allStrings);
+     *     }
+     *
+     *     public int longestString(List<String> list) {
+     *         int max = 0;
+     *         for(String s: list) {
+     *             if(s.length() > max) {
+     *                 max = s.length();
+     *             }
+     *         }
+     *         return max;
+     *     }
+     *
+     *     public void clearStringBuffer(StringBuffer sb) {
+     *         int length = sb.length();
+     *         sb.delete(0, length);
+     *     }
+     *
+     *     public void cleanUpToCharacter(StringBuffer sb, char c) {
+     *         sb.delete(0, sb.indexOf(String.valueOf(c)) + 1);
+     *     }
+     *
+     * }
+     * @param s
+     * @return
+     */
+    public static int leetCodeSlidingWindowProblem(String s) {
+        int maxSize = 0;
+        //map of indices
+        Map<Character, Integer> map = new HashMap<>();
+        int start = 0;
+        for (int end = 0; end < s.length(); end++) {
+            char rChar = s.charAt(end);
+            if(map.containsKey(rChar)) {
+                // if we already have the key, we have to set start at either current index for that character,
+                // or the index next to that character
+                start = Math.max(start, map.get(rChar) + 1);
+            }
+            map.put(rChar, end);
+            maxSize = Math.max(maxSize, end - start + 1);
+        }
+        return maxSize;
+    }
+
+    /**
+     * Given a string s, return the longest palindromic substring in s.
+     * Input: s = "babad"
+     * Output: "bab"
+     * Explanation: "aba" is also a valid answer.
+     */
+    public static String leetCodeLongestPalindromicSubstring(String s) {
+        int start = 0;
+        log.info("{}",isPalindrome("aa"));
+        StringBuffer sb = new StringBuffer();
+        List<String> palindromes = new ArrayList<>();
+
+        for(int end = 0; end < s.length(); end++) {
+            sb.append(s.charAt(end));
+
+        }
+        return "";
+    }
+
+    private static boolean isPalindrome(String str) {
+        for(int s = 0,e = str.length() - 1; s < e; s++, e--) {
+            if(str.charAt(s) != str.charAt(e))
+                return false;
+        }
+        return true;
+    }
+
 }

@@ -2,11 +2,12 @@ package com.problems.slidingwindow;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j
@@ -56,4 +57,94 @@ public class SlidingWindowTests {
         int k2 = 2;
         assertEquals(6, utility.longestSubArrayWithOnesReplacement(arr2, k2));
     }
+
+    @Test
+    public void testProblemOneChallengeTest1() {
+        String input = "oidbcaf";
+        String permutation = "abc";
+        assertTrue(utility.problemChallengeOne(input, permutation));
+    }
+
+    @Test
+    public void testProblemOneChallengeTest2() {
+        String input = "odicf";
+        String permutation = "dc";
+        assertFalse(utility.problemChallengeOne(input, permutation));
+    }
+
+    @Test
+    public void testProblemOneChallengeMoreEfficientTest1() {
+        String input = "oidbcaf";
+        String permutation = "abc";
+        assertTrue(utility.problemChallengeOneMoreEfficient(input, permutation));
+    }
+
+    @Test
+    public void testProblemOneChallengeMoreEfficientTest2() {
+        String input = "odicf";
+        String permutation = "dc";
+        assertFalse(utility.problemChallengeOneMoreEfficient(input, permutation));
+    }
+
+    @Test
+    public void testProblemChallengeTwoTest1() {
+        String input = "ppqp";
+        String pattern = "qp";
+        int[] exResult = {1,2};
+        List<Integer> result = utility.problemChallengeTwo(input, pattern);
+
+        log.debug("{}", result);
+        for(int e: exResult) {
+            assertTrue(result.contains(e), "Doesn't contain " + e);
+        }
+    }
+
+    @Test
+    public void testProblemChallengeTwoTest2() {
+        String input = "ppqp";
+        String pattern = "qp";
+        int[] exResult = {1,2};
+        List<Integer> result = utility.problemChallengeTwo(input, pattern);
+
+        log.debug("{}", result);
+        for(int e: exResult) {
+            assertTrue(result.contains(e), "Doesn't contain " + e);
+        }
+    }
+
+    @Test
+    @Disabled
+    public void testProblemChallengeThreeTest1() {
+        String input = "aabdec";
+        String pattern = "abc";
+        String expResult = "abdec";
+        assertEquals(expResult, utility.problemChallengeThree(input, pattern));
+    }
+
+    @Test
+    @Disabled
+    public void testProblemChallengeThreeTest2() {
+        String input = "abdbca";
+        String pattern = "abc";
+        String expResult = "bca";
+        assertEquals(expResult, utility.problemChallengeThree(input, pattern));
+    }
+
+    @Test
+    public void testLeetCodeSlidingWindowProblem() {
+        String s = "abcabcbb";
+        String s2 = "pwwkew";
+        assertEquals(3, utility.leetCodeSlidingWindowProblem(s));
+        assertEquals(3, utility.leetCodeSlidingWindowProblem(s2));
+    }
+
+    @Test
+    public void testLeetCodeLongestPalindromicSubstring() {
+        String s = "babad";
+        String result = "bab";
+        log.info(utility.leetCodeLongestPalindromicSubstring(s));
+
+    }
+
+
 }
