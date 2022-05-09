@@ -324,4 +324,13 @@ public class SlidingWindowProblem {
         }
         return result;
     }
+    /**
+     * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+     * @param s
+     * @return
+     */
+    public static int leetCodeSlidingWindowProblem(String s) {
+        return 0;
+    }
+
 }

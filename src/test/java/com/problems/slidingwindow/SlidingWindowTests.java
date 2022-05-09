@@ -2,6 +2,7 @@ package com.problems.slidingwindow;
 
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -112,6 +113,7 @@ public class SlidingWindowTests {
     }
 
     @Test
+    @Disabled
     public void testProblemChallengeThreeTest1() {
         String input = "aabdec";
         String pattern = "abc";
@@ -120,10 +122,19 @@ public class SlidingWindowTests {
     }
 
     @Test
+    @Disabled
     public void testProblemChallengeThreeTest2() {
         String input = "abdbca";
         String pattern = "abc";
         String expResult = "bca";
         assertEquals(expResult, utility.problemChallengeThree(input, pattern));
     }
+
+    @Test
+    public void testLeetCodeSlidingWindowProblem() {
+        String s = "abcabcbb";
+        assertEquals(0, utility.leetCodeSlidingWindowProblem(s));
+    }
+
+
 }
