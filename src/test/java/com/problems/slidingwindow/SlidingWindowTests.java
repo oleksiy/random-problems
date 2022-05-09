@@ -138,5 +138,13 @@ public class SlidingWindowTests {
         assertEquals(3, utility.leetCodeSlidingWindowProblem(s2));
     }
 
+    @Test
+    public void testLeetCodeLongestPalindromicSubstring() {
+        String s = "babad";
+        String result = "bab";
+        log.info(utility.leetCodeLongestPalindromicSubstring(s));
+
+    }
+
 
 }

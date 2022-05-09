@@ -392,4 +392,31 @@ public class SlidingWindowProblem {
         return maxSize;
     }
 
+    /**
+     * Given a string s, return the longest palindromic substring in s.
+     * Input: s = "babad"
+     * Output: "bab"
+     * Explanation: "aba" is also a valid answer.
+     */
+    public static String leetCodeLongestPalindromicSubstring(String s) {
+        int start = 0;
+        log.info("{}",isPalindrome("aa"));
+        StringBuffer sb = new StringBuffer();
+        List<String> palindromes = new ArrayList<>();
+
+        for(int end = 0; end < s.length(); end++) {
+            sb.append(s.charAt(end));
+
+        }
+        return "";
+    }
+
+    private static boolean isPalindrome(String str) {
+        for(int s = 0,e = str.length() - 1; s < e; s++, e--) {
+            if(str.charAt(s) != str.charAt(e))
+                return false;
+        }
+        return true;
+    }
+
 }
