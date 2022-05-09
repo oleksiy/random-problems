@@ -133,7 +133,7 @@ public class SlidingWindowTests {
     @Test
     public void testLeetCodeSlidingWindowProblem() {
         String s = "abcabcbb";
-        assertEquals(0, utility.leetCodeSlidingWindowProblem(s));
+        assertEquals(3, utility.leetCodeSlidingWindowProblem(s));
     }
 
 

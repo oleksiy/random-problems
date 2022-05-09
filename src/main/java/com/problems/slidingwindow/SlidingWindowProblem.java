@@ -330,7 +330,22 @@ public class SlidingWindowProblem {
      * @return
      */
     public static int leetCodeSlidingWindowProblem(String s) {
-        return 0;
+        int maxSize = Integer.MIN_VALUE;
+        Map<Character, Integer> map = new HashMap<>();
+        int start = 0;
+        for (int end = 0; end < s.length(); end++) {
+            char rChar = s.charAt(end);
+            if(map.keySet().contains(rChar)) {
+                maxSize = Math.max(end - start, maxSize);
+                map.put(rChar, map.get(rChar) - 1);
+                if(map.get(rChar) == 0)
+                    map.remove(rChar);
+                start++;
+            }
+            map.put(rChar, 1);
+            maxSize = Math.max(maxSize, end - start + 1);
+        }
+        return maxSize;
     }
 
 }
